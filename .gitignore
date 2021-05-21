@@ -1,0 +1,13 @@
+## model set - too large to upload
+/pose
+
+## img & output
+*.jpg
+*.jpeg
+*.png
+
+## video & output
+*.avi
+*.mp4
+
+## else need, add below
