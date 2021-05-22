@@ -4,7 +4,7 @@ import time
 import numpy as np
 
 from spcase.SPimage import forImage
-from spcase.SPvideo import forVideo 
+from spcase.SPvideo import forVideo
 from utils.formatter import str2bool
 
 if __name__ == '__main__':
