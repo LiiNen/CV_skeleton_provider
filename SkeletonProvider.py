@@ -4,14 +4,11 @@ import time
 import numpy as np
 
 def forImage(opt):
-    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold, gray_bool = opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.threshold, opt.gray
+    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold, gray_bool = opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray
 
     print(gray_bool)
 
-    if exclude == -1:
-        # print('not')
-    else:
-        # print('list')
+    if exclude != -1:
         for ex_point in exclude:
             if ex_point < 0 or ex_point > 17:
                 # print('exclude points out of range.')
