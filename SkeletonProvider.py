@@ -18,6 +18,18 @@ def forImage(opt):
     POSE_PAIRS = [ [1,0],[1,2],[1,5],[2,3],[3,4],[5,6],[6,7],[1,8],[8,9],[9,10],[1,11],[11,12],[12,13],[0,14],[0,15],[14,16],[15,17]]
 
     frame = cv2.imread(source)
+    if gray_bool:
+        frame = cv2.imread(source, cv2.IMREAD_UNCHANGED)
+        bgr = frame[:, :, :3]  # Channels 0..2
+        gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
+
+        # Some sort of processing...
+
+        bgr = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+        alpha = frame[:, :, 3]  # Channel 3
+        frame = np.dstack([bgr, alpha])  # Add the alpha channel
+        cv2.imwrite('toGray.png', frame)
+        frame = cv2.imread('toGray.png')
     frameCopy = np.copy(frame)
     frameWidth = frame.shape[1]
     frameHeight = frame.shape[0]
