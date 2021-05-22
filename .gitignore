@@ -10,4 +10,7 @@
 *.avi
 *.mp4
 
+## pycache
+*__pycache__*
+
 ## else need, add below
