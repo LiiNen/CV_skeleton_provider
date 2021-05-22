@@ -1,3 +1,4 @@
+import argparse
 import cv2
 import time
 import numpy as np
@@ -69,3 +70,16 @@ print("Total time taken : {:.3f}".format(time.time() - t))
 
 cv2.waitKey(0)
 
+def forImage(opt):
+    in_format, out_show = opt.in_format, opt.out_show
+    print(in_format, out_show)
+    return
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--in-format', type=str, default='img', help='img for image, video for video')
+    parser.add_argument('--out-show', type=str, default='keypoint', help='keypoint or skeleton or both')
+    opt = parser.parse_args()
+    print(opt)
+
+    forImage(opt)
