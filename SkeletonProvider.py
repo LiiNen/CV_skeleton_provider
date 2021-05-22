@@ -4,7 +4,7 @@ import time
 import numpy as np
 
 def forImage(opt):
-    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile = opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto
+    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold = opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.threshold
 
     if exclude == -1:
         print('not')
@@ -22,7 +22,6 @@ def forImage(opt):
     frameCopy = np.copy(frame)
     frameWidth = frame.shape[1]
     frameHeight = frame.shape[0]
-    threshold = 0.1
 
     net = cv2.dnn.readNetFromCaffe(protoFile, weightsFile)
 
@@ -99,6 +98,7 @@ if __name__ == '__main__':
     parser.add_argument('--exclude', nargs='+', type=int, default=-1, help='points to exclude. args for spacing. -1 for none(default), 0~17 to exclude. else error')
     parser.add_argument('--proto', type=str, default='pose/coco/pose_deploy_linevec.prototxt', help='for model. default pose/coco/pose_deploy_linevec.prototxt')
     parser.add_argument('--weight', type=str, default='pose/coco/pose_iter_440000.caffemodel', help='for model. default pose/coco/pose_iter_440000.caffemodel')
+    parser.add_argument('--thres', type=float, default=0.1, help='set threshold for detecting. default 0.1')
     opt = parser.parse_args()
     print(opt)
 
