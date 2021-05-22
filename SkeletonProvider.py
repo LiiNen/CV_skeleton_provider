@@ -4,15 +4,17 @@ import time
 import numpy as np
 
 def forImage(opt):
-    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold = opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.threshold
+    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold, gray_bool = opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.threshold, opt.gray
+
+    print(gray_bool)
 
     if exclude == -1:
-        print('not')
+        # print('not')
     else:
-        print('list')
+        # print('list')
         for ex_point in exclude:
             if ex_point < 0 or ex_point > 17:
-                print('exclude points out of range.')
+                # print('exclude points out of range.')
                 return
 
     nPoints = 18
@@ -99,6 +101,7 @@ if __name__ == '__main__':
     parser.add_argument('--proto', type=str, default='pose/coco/pose_deploy_linevec.prototxt', help='for model. default pose/coco/pose_deploy_linevec.prototxt')
     parser.add_argument('--weight', type=str, default='pose/coco/pose_iter_440000.caffemodel', help='for model. default pose/coco/pose_iter_440000.caffemodel')
     parser.add_argument('--thres', type=float, default=0.1, help='set threshold for detecting. default 0.1')
+    parser.add_argument('--gray', type=str2bool, default=False, help='preprocessing using gray img, set True')
     opt = parser.parse_args()
     print(opt)
 
