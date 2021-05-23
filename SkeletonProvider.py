@@ -18,8 +18,10 @@ if __name__ == '__main__':
     parser.add_argument('--weight', type=str, default='pose/coco/pose_iter_440000.caffemodel', help='for model. default pose/coco/pose_iter_440000.caffemodel')
     parser.add_argument('--thres', type=float, default=0.1, help='set threshold for detecting. default 0.1')
     parser.add_argument('--gray', type=str2bool, default=False, help='preprocessing using gray img, set True')
+    parser.add_argument('--back', type=str2bool, default=False, help='preprocessing removing background img, set True')
+    parser.add_argument('--selectRect', type=str2bool, default=False, help='preprocessing select Rect to masking removed background img')
     parser.add_argument('--comp', type=int, default=1, help='reducing fps only for video. fps/comp. default 1')
-
+    
     opt = parser.parse_args()
     print(opt)
     
