@@ -10,6 +10,7 @@ from utils.formatter import str2bool
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--source', type=str, default='example.jpeg', help='input source path. default example.jpeg')
+    parser.add_argument('--output', type=str, default='output.jpg', help='output source path. default output.jpg')
     parser.add_argument('--skel', type=str2bool, default=True, help='if you want not to draw skeleton, set arg to False')
     parser.add_argument('--keyp', type=str2bool, default=True, help='if you want not to draw ketpoints, set arg to False')
     parser.add_argument('--exclude', nargs='+', type=int, default=-1, help='points to exclude. args for spacing. -1 for none(default), 0~17 to exclude. else error')
