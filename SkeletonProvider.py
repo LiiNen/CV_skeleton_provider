@@ -3,8 +3,9 @@ import cv2
 import time
 import numpy as np
 
+
 def forImage(opt):
-    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold, gray_bool = opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray
+    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold, gray_bool , rm_background_bool= opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back
 
     print(gray_bool)
 
@@ -18,18 +19,24 @@ def forImage(opt):
     POSE_PAIRS = [ [1,0],[1,2],[1,5],[2,3],[3,4],[5,6],[6,7],[1,8],[8,9],[9,10],[1,11],[11,12],[12,13],[0,14],[0,15],[14,16],[15,17]]
 
     frame = cv2.imread(source)
+    if rm_background_bool:
+        mask = np.zeros(frame.shape[:2], np.uint8)
+        bgdModel = np.zeros((1, 65), np.float64)
+        fgdModel = np.zeros((1, 65), np.float64)
+        # rect = cv2.selectROI(image_gray)
+        rect = (10, 10, frame.shape[1] - 10, frame.shape[0] - 10)
+        cv2.grabCut(frame, mask, rect, bgdModel, fgdModel, 10, cv2.GC_INIT_WITH_RECT)
+        mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
+        frame = frame * mask2[:, :, np.newaxis]
     if gray_bool:
         frame = cv2.imread(source, cv2.IMREAD_UNCHANGED)
-        bgr = frame[:, :, :3]  # Channels 0..2
+        bgr = frame[:,:,:3]
         gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
-
-        # Some sort of processing...
-
         bgr = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
-        alpha = frame[:, :, 3]  # Channel 3
-        frame = np.dstack([bgr, alpha])  # Add the alpha channel
-        cv2.imwrite('toGray.png', frame)
-        frame = cv2.imread('toGray.png')
+        #alpha = rgb2gray(frame)  # Channel 3
+        frame = np.dstack([bgr])  # Add the alpha channel
+
+
     frameCopy = np.copy(frame)
     frameWidth = frame.shape[1]
     frameHeight = frame.shape[0]
@@ -111,6 +118,7 @@ if __name__ == '__main__':
     parser.add_argument('--weight', type=str, default='pose/coco/pose_iter_440000.caffemodel', help='for model. default pose/coco/pose_iter_440000.caffemodel')
     parser.add_argument('--thres', type=float, default=0.1, help='set threshold for detecting. default 0.1')
     parser.add_argument('--gray', type=str2bool, default=False, help='preprocessing using gray img, set True')
+    parser.add_argument('--back', type=str2bool, default=False, help='preprocessing removing background img, set True')
     opt = parser.parse_args()
     print(opt)
 
