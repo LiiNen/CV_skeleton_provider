@@ -32,7 +32,7 @@ def forImage(opt):
     net.setInput(inpBlob)
 
     output = net.forward()
-    print("time taken by network : {:.3f}".format(time.time() - t))
+    print("time taken : {:.3f}".format(time.time() - t))
 
     H = output.shape[2]
     W = output.shape[3]
@@ -65,7 +65,7 @@ def forImage(opt):
 
 
     cv2.imshow('output', frame)
-    cv2.imwrite(out_path, frame)
+    cv2.imwrite(out_path + 'jpg', frame)
 
     print("Total time taken : {:.3f}".format(time.time() - t))
 
