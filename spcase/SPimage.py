@@ -3,10 +3,12 @@ import cv2
 import time
 import numpy as np
 
+from utils.formatter import optionChecker
+
 def forImage(opt):
     print('img')
-    source, skeleton_bool, keypoint_bool, label_bool, exclude, weightsFile, protoFile, threshold, out_path = opt.source, opt.skel, opt.keyp, opt.label, opt.exclude, opt.weight, opt.proto, opt.thres, opt.output
-
+    source, option, exclude, weightsFile, protoFile, threshold, out_path = opt.source, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.output
+    opt_dict = optionChecker(option)
     if exclude != -1:
         for ex_point in exclude:
             if ex_point < 0 or ex_point > 17:
@@ -49,15 +51,15 @@ def forImage(opt):
         # threshold 넘는 것만 keypoint 저장
         if prob > threshold : 
             points.append((int(x), int(y)))
-            if(keypoint_bool):
+            if(opt_dict['keyp']):
                 cv2.circle(frame, points[-1], 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
-            if(label_bool):
+            if(opt_dict['label']):
                 cv2.putText(frame, "{}".format(i), points[-1], cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA)
         else :
             points.append(None)
 
     # skeleton 구조 연결해주기
-    if(skeleton_bool):
+    if(opt_dict['skel']):
         for pair in POSE_PAIRS:
             partA = pair[0]
             partB = pair[1]
