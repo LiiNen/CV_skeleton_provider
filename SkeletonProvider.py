@@ -14,6 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=str, default='output', help='output source path, until filename(format exclude). default output')
     parser.add_argument('--skel', type=str2bool, default=True, help='if you want not to draw skeleton, set arg to False')
     parser.add_argument('--keyp', type=str2bool, default=True, help='if you want not to draw ketpoints, set arg to False')
+    parser.add_argument('--label', type=str2bool, default=True, help='if you want not to write labels, set arg to False')
     parser.add_argument('--exclude', nargs='+', type=int, default=-1, help='points to exclude. args for spacing. -1 for none(default), 0~17 to exclude. else error')
     parser.add_argument('--proto', type=str, default='pose/coco/pose_deploy_linevec.prototxt', help='for model. default pose/coco/pose_deploy_linevec.prototxt')
     parser.add_argument('--weight', type=str, default='pose/coco/pose_iter_440000.caffemodel', help='for model. default pose/coco/pose_iter_440000.caffemodel')
