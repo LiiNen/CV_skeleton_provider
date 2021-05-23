@@ -2,6 +2,7 @@ import argparse
 import cv2
 import time
 import numpy as np
+import math
 
 def forVideo(opt):
     print('video')
@@ -32,7 +33,6 @@ def forVideo(opt):
     inHeight = 368
     t = time.time()
     while(frameLeft):
-
         inpBlob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (inWidth, inHeight),
                             (0, 0, 0), swapRB=False, crop=False)
         net.setInput(inpBlob)
@@ -68,9 +68,9 @@ def forVideo(opt):
                 cv2.line(frame, points[partA], points[partB], (0, 255, 255), 2)
         videoWriter.write(frame)
 
-        # outputFps * comp 만큼 프레임 건너뛰기
-        # source fps가 comp로 나누어떨어지지 않아도 같은 영상 길이(시간)을 제공
-        for i in range(0, outputFps*comp):
+        # 프레임 건너뛰기
+        # source fps가 comp로 나누어떨어지지 않아도 비슷한 영상 길이(시간)을 제공
+        for i in range(0, int(sourceFps/outputFps)):
             frameLeft, frame = frames.read()
         cv2.waitKey(outputFps)
 
