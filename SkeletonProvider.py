@@ -5,7 +5,7 @@ import numpy as np
 
 
 def forImage(opt):
-    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold, gray_bool , rm_background_bool= opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back
+    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold, gray_bool , rm_background_bool,select_Rect_bool= opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect
 
     print(gray_bool)
 
@@ -23,8 +23,10 @@ def forImage(opt):
         mask = np.zeros(frame.shape[:2], np.uint8)
         bgdModel = np.zeros((1, 65), np.float64)
         fgdModel = np.zeros((1, 65), np.float64)
-        # rect = cv2.selectROI(image_gray)
-        rect = (10, 10, frame.shape[1] - 10, frame.shape[0] - 10)
+        if select_Rect_bool:
+            rect = cv2.selectROI(frame)
+        else:
+            rect = (10, 10, frame.shape[1] - 10, frame.shape[0] - 10)
         cv2.grabCut(frame, mask, rect, bgdModel, fgdModel, 10, cv2.GC_INIT_WITH_RECT)
         mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
         frame = frame * mask2[:, :, np.newaxis]
@@ -119,6 +121,7 @@ if __name__ == '__main__':
     parser.add_argument('--thres', type=float, default=0.1, help='set threshold for detecting. default 0.1')
     parser.add_argument('--gray', type=str2bool, default=False, help='preprocessing using gray img, set True')
     parser.add_argument('--back', type=str2bool, default=False, help='preprocessing removing background img, set True')
+    parser.add_argument('--selectRect', type=str2bool, default=False, help='preprocessing select Rect to masking removed background img')
     opt = parser.parse_args()
     print(opt)
 
