@@ -17,3 +17,14 @@ def fileformat(path):
         return 1
     else:
         return -1
+
+def optionChecker(option):
+    optDict = {'skel': False, 'keyp': False, 'label': False}
+    if 's' in option:
+        optDict['skel'] = True
+    if 'k' in option:
+        optDict['keyp'] = True
+    if 'l' in option:
+        optDict['label'] = True
+
+    return optDict
