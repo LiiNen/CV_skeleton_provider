@@ -16,6 +16,7 @@ if __name__ == '__main__':
     parser.add_argument('--proto', type=str, default='pose/coco/pose_deploy_linevec.prototxt', help='for model. default pose/coco/pose_deploy_linevec.prototxt')
     parser.add_argument('--weight', type=str, default='pose/coco/pose_iter_440000.caffemodel', help='for model. default pose/coco/pose_iter_440000.caffemodel')
     parser.add_argument('--thres', type=float, default=0.1, help='set threshold for detecting. default 0.1')
+    parser.add_argument('--gray', type=str2bool, default=False, help='preprocessing using gray img, set True')
     opt = parser.parse_args()
     print(opt)
     
