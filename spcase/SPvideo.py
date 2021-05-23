@@ -4,10 +4,12 @@ import time
 import numpy as np
 import math
 
+from utils.formatter import optionChecker
+
 def forVideo(opt):
     print('video')
-    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold, out_path, comp = opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.thres, opt.output, opt.comp
-
+    source, option, exclude, weightsFile, protoFile, threshold, out_path, comp = opt.source, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.output, opt.comp
+    opt_dict = optionChecker(option)
     if exclude != -1:
         for ex_point in exclude:
             if ex_point < 0 or ex_point > 17:
@@ -54,18 +56,21 @@ def forVideo(opt):
             # threshold 넘는 것만 keypoint 저장
             if prob > threshold : 
                 points.append((int(x), int(y)))
-                cv2.circle(frame, points[-1], 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
-                cv2.putText(frame, "{}".format(i), points[-1], cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA)
+                if(opt_dict['keyp']):
+                    cv2.circle(frame, points[-1], 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
+                if(opt_dict['label']):
+                    cv2.putText(frame, "{}".format(i), points[-1], cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA)
             else :
                 points.append(None)
 
-        # 원본 이미지 위에 그리기
-        for pair in POSE_PAIRS:
-            partA = pair[0]
-            partB = pair[1]
+        # skeleton 구조 연결해주기
+        if(opt_dict['skel']):
+            for pair in POSE_PAIRS:
+                partA = pair[0]
+                partB = pair[1]
 
-            if points[partA] and points[partB]:
-                cv2.line(frame, points[partA], points[partB], (0, 255, 255), 2)
+                if points[partA] and points[partB]:
+                    cv2.line(frame, points[partA], points[partB], (0, 255, 255), 2)
         videoWriter.write(frame)
 
         # 프레임 건너뛰기
