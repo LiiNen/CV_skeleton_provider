@@ -1,7 +1,35 @@
 import argparse
 import cv2
+import imutils
 import time
 import numpy as np
+
+
+def hogDetector(frame):
+    HOGCV = cv2.HOGDescriptor()
+    HOGCV.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+    bounding_box_cordinates, weights = HOGCV.detectMultiScale(
+        frame, winStride=(4, 4), padding=(8, 8), scale=1.03)
+
+    person = 1
+    for x, y, w, h in bounding_box_cordinates:
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        cv2.putText(frame, f'person {person}', (x, y),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+        person += 1
+
+    cv2.putText(frame, 'Status : Detecting ', (40, 40),
+                cv2.FONT_HERSHEY_DUPLEX, 0.8, (255, 0, 0), 2)
+    cv2.putText(frame, f'Total Persons : {person-1}',
+                (40, 70), cv2.FONT_HERSHEY_DUPLEX, 0.8, (255, 0, 0), 2)
+    cv2.imshow('output', frame)
+
+    return frame
+
+
+# 의미 없음
+def flipColor(frame):
+    return 255-frame
 
 
 def gamma(frame):
@@ -10,7 +38,20 @@ def gamma(frame):
     out = frame.astype(np.float)
     out = ((out / 255) ** (1 / g)) * 255
     out = out.astype(np.uint8)
+    # out = hogDetector(out)
     return out
+
+
+def equalize(src):
+    src_ycrcb = cv2.cvtColor(src, cv2.COLOR_BGR2YCrCb)
+    ycrcb_planes = cv2.split(src_ycrcb)
+
+    # 밝기 성분에 대해서만 히스토그램 평활화 수행
+    ycrcb_planes[0] = cv2.equalizeHist(ycrcb_planes[0])
+
+    dst_ycrcb = cv2.merge(ycrcb_planes)
+    dst = cv2.cvtColor(dst_ycrcb, cv2.COLOR_YCrCb2BGR)
+    return dst
 
 
 def forImage(opt):
@@ -29,6 +70,9 @@ def forImage(opt):
 
     frame = cv2.imread(source)
     frame = gamma(frame)
+    # frame = flipColor(frame)
+    # frame = imutils.resize(frame, width=min(800, frame.shape[1]))
+    frame = equalize(frame)
     frameCopy = np.copy(frame)
     frameWidth = frame.shape[1]
     frameHeight = frame.shape[0]
@@ -39,6 +83,8 @@ def forImage(opt):
     # 네트워크 인풋 사이즈 설정
     inWidth = 368
     inHeight = 368
+    # inWidth = 720
+    # inHeight = 720
     inpBlob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (inWidth, inHeight),
                                     (0, 0, 0), swapRB=False, crop=False)
 
