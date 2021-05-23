@@ -5,9 +5,7 @@ import numpy as np
 
 
 def forImage(opt):
-    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold, gray_bool , rm_background_bool,select_Rect_bool= opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect
-
-    print(gray_bool)
+    source, skeleton_bool, keypoint_bool, exclude, weightsFile, protoFile, threshold, gray_bool , back_bool, selectRect_bool = opt.source, opt.skel, opt.keyp, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect
 
     if exclude != -1:
         for ex_point in exclude:
@@ -19,11 +17,11 @@ def forImage(opt):
     POSE_PAIRS = [ [1,0],[1,2],[1,5],[2,3],[3,4],[5,6],[6,7],[1,8],[8,9],[9,10],[1,11],[11,12],[12,13],[0,14],[0,15],[14,16],[15,17]]
 
     frame = cv2.imread(source)
-    if rm_background_bool:
+    if back_bool:
         mask = np.zeros(frame.shape[:2], np.uint8)
         bgdModel = np.zeros((1, 65), np.float64)
         fgdModel = np.zeros((1, 65), np.float64)
-        if select_Rect_bool:
+        if selectRect_bool:
             rect = cv2.selectROI(frame)
         else:
             rect = (10, 10, frame.shape[1] - 10, frame.shape[0] - 10)
