@@ -2,13 +2,16 @@ import argparse
 import cv2
 import time
 import numpy as np
+import sys,os
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from utils.formatter import optionChecker
-
+from connect_location import detect
 
 def forImage(opt):
     print('img')
-    source, out_path, option, exclude, weightsFile, protoFile, threshold, gray_bool, back_bool, selectRect_bool = opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect
+    source, out_path, option, exclude, weightsFile, protoFile, threshold, gray_bool, back_bool, selectRect_bool, auto_location = opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect, opt.autolocation
     opt_dict = optionChecker(option)
 
     if exclude != -1:
@@ -28,6 +31,9 @@ def forImage(opt):
         fgdModel = np.zeros((1, 65), np.float64)
         if selectRect_bool:
             rect = cv2.selectROI(frame)
+        elif auto_location:
+            temp = detect(1,frame)
+            rect = (int(temp[0]),int(temp[1]),int(temp[2]),int(temp[3]))
         else:
             rect = (10, 10, frame.shape[1] - 10, frame.shape[0] - 10)
         cv2.grabCut(frame, mask, rect, bgdModel, fgdModel, 10, cv2.GC_INIT_WITH_RECT)
