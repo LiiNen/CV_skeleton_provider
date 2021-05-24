@@ -5,6 +5,14 @@ import time
 import numpy as np
 
 
+def deleteShadow(frame):
+    frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+    out = cv2.adaptiveThreshold(
+        frame, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 5)
+    out = cv2.cvtColor(out, cv2.COLOR_GRAY2RGB)
+    return out
+
+
 def hogDetector(frame):
     HOGCV = cv2.HOGDescriptor()
     HOGCV.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
@@ -42,16 +50,11 @@ def gamma(frame):
     return out
 
 
-def equalize(src):
-    src_ycrcb = cv2.cvtColor(src, cv2.COLOR_BGR2YCrCb)
-    ycrcb_planes = cv2.split(src_ycrcb)
-
-    # 밝기 성분에 대해서만 히스토그램 평활화 수행
-    ycrcb_planes[0] = cv2.equalizeHist(ycrcb_planes[0])
-
-    dst_ycrcb = cv2.merge(ycrcb_planes)
-    dst = cv2.cvtColor(dst_ycrcb, cv2.COLOR_YCrCb2BGR)
-    return dst
+def equalize(frame):
+    image_yuv = cv2.cvtColor(frame, cv2.COLOR_RGB2YUV)  # YUV로 변경합니다.
+    image_yuv[:, :, 0] = cv2.equalizeHist(image_yuv[:, :, 0])  # 히스토그램 평활화를 적용
+    image_rgb = cv2.cvtColor(image_yuv, cv2.COLOR_YUV2RGB)
+    return image_rgb
 
 
 def forImage(opt):
@@ -73,6 +76,7 @@ def forImage(opt):
     # frame = flipColor(frame)
     # frame = imutils.resize(frame, width=min(800, frame.shape[1]))
     frame = equalize(frame)
+    # frame = deleteShadow(frame)
     frameCopy = np.copy(frame)
     frameWidth = frame.shape[1]
     frameHeight = frame.shape[0]
