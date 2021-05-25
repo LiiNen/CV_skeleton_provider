@@ -1,14 +1,23 @@
 import argparse
 import cv2
+import imutils
 import time
 import numpy as np
 import math
 
 from utils.formatter import optionChecker
+from utils.preprocessor import preBack
+from utils.preprocessor import preGray
+from utils.preprocessor import preGamma
+from utils.preprocessor import preBlackProportion
 
 def forVideo(opt):
     print('video')
-    source, option, exclude, weightsFile, protoFile, threshold, out_path, comp = opt.source, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.output, opt.comp
+    source, out_path, option, exclude, weightsFile, protoFile, threshold, comp = \
+      opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.comp
+    gray_bool, back_bool, selectRect_bool, gamma_value, b_propo_bool = \
+      opt.gray, opt.back, opt.selectRect, opt.gamma, opt.b_propo
+
     opt_dict = optionChecker(option)
     if exclude != -1:
         for ex_point in exclude:
@@ -35,6 +44,16 @@ def forVideo(opt):
     inHeight = 368
     t = time.time()
     while(frameLeft):
+        originFrame = frame.copy()
+        if gamma_value > 0:
+            frame = preGamma(frame, gamma_value)
+        if b_propo_bool:
+            preBlackPropotion(frame)
+        if back_bool:
+            frame = preBack(frame, selectRect_bool)
+        if gray_bool:
+            frame = preGray(frame, source)
+
         inpBlob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (inWidth, inHeight),
                             (0, 0, 0), swapRB=False, crop=False)
         net.setInput(inpBlob)
@@ -57,9 +76,9 @@ def forVideo(opt):
             if prob > threshold : 
                 points.append((int(x), int(y)))
                 if(opt_dict['keyp']):
-                    cv2.circle(frame, points[-1], 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
+                    cv2.circle(originFrame, points[-1], 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
                 if(opt_dict['label']):
-                    cv2.putText(frame, "{}".format(i), points[-1], cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA)
+                    cv2.putText(originFrame, "{}".format(i), points[-1], cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, lineType=cv2.LINE_AA)
             else :
                 points.append(None)
 
@@ -70,8 +89,8 @@ def forVideo(opt):
                 partB = pair[1]
 
                 if points[partA] and points[partB]:
-                    cv2.line(frame, points[partA], points[partB], (0, 255, 255), 2)
-        videoWriter.write(frame)
+                    cv2.line(originFrame, points[partA], points[partB], (0, 255, 255), 2)
+        videoWriter.write(originFrame)
 
         # 프레임 건너뛰기
         # source fps가 comp로 나누어떨어지지 않아도 비슷한 영상 길이(시간)을 제공
