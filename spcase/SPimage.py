@@ -33,7 +33,7 @@ def forImage(opt):
             rect = cv2.selectROI(frame)
         elif auto_location:
             temp = detect(1,frame)
-            rect = (int(temp[0]),int(temp[1]),int(temp[2]),int(temp[3]))
+            rect = (int(temp[0]),int(temp[1]),int(temp[2])-10,int(temp[3]-10))
         else:
             rect = (10, 10, frame.shape[1] - 10, frame.shape[0] - 10)
         cv2.grabCut(frame, mask, rect, bgdModel, fgdModel, 10, cv2.GC_INIT_WITH_RECT)
