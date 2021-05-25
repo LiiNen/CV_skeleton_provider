@@ -22,3 +22,36 @@ def preGray(frame, source):
     # alpha = rgb2gray(frame)  # Channel 3
     frame = np.dstack([bgr])  # Add the alpha channel
     return frame
+
+def preGamma(frame, gamma):
+    out = frame.copy()
+    out = frame.astype(np.float)
+    out = ((out / 255) ** (1 / gamma)) * 255
+    out = out.astype(np.uint8)
+    return out
+
+def findWhite(frame):
+    lower_white = np.array([0, 0, 168])
+    upper_white = np.array([172, 111, 255])
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv, lower_white, upper_white)
+    output = cv2.bitwise_and(frame, frame, mask=mask)
+    output = np.array(output)
+    h, w = output.shape[:2]
+    colours, counts = np.unique(
+        output.reshape(-1, 3), axis=0, return_counts=1)
+
+    for index, colour in enumerate(colours):
+        if(colour[0] == 0 & colour[1] == 0 & colour[2] == 0):
+            cv2.imwrite('color.jpg', output)
+            return (100*counts[index])/(h*w)
+
+def preBlackPropotion(frame):
+    if findWhite(frame) < 30:
+        image_yuv = cv2.cvtColor(frame, cv2.COLOR_RGB2YUV)  # YUV로 변경합니다.
+        image_yuv[:, :, 0] = cv2.equalizeHist(image_yuv[:, :, 0])  # 히스토그램 평활화를 적용
+        image_rgb = cv2.cvtColor(image_yuv, cv2.COLOR_YUV2RGB)
+        return image_rgb
+    else:
+        print('non needed')
+        return frame

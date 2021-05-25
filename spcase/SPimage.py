@@ -7,47 +7,12 @@ import numpy as np
 from utils.formatter import optionChecker
 from utils.preprocessor import preBack
 from utils.preprocessor import preGray
-
-def findWhite(frame):
-    lower_white = np.array([0, 0, 168])
-    upper_white = np.array([172, 111, 255])
-    # Hue is from 0-179 for Opencv
-    # Set minimum and max HSV values to display
-    # Create HSV Image and threshold into a range.
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(hsv, lower_white, upper_white)
-    output = cv2.bitwise_and(frame, frame, mask=mask)
-    output = np.array(output)
-    h, w = output.shape[:2]
-    # Get list of unique colours...
-    # Arrange all pixels into a tall column of 3 RGB values and find unique rows (colours)
-    colours, counts = np.unique(
-        output.reshape(-1, 3), axis=0, return_counts=1)
-
-    # # Iterate through unique colours
-    for index, colour in enumerate(colours):
-        if(colour[0] == 0 & colour[1] == 0 & colour[2] == 0):
-            cv2.imwrite('color.jpg', output)
-            return (100*counts[index])/(h*w)
-
-def gamma(frame):
-    g = float(input("감마 값 : "))
-    out = frame.copy()
-    out = frame.astype(np.float)
-    out = ((out / 255) ** (1 / g)) * 255
-    out = out.astype(np.uint8)
-    return out
-
-def equalize(frame):
-    image_yuv = cv2.cvtColor(frame, cv2.COLOR_RGB2YUV)  # YUV로 변경합니다.
-    image_yuv[:, :, 0] = cv2.equalizeHist(image_yuv[:, :, 0])  # 히스토그램 평활화를 적용
-    image_rgb = cv2.cvtColor(image_yuv, cv2.COLOR_YUV2RGB)
-    return image_rgb
-
+from utils.preprocessor import preGamma
+from utils.preprocessor import preBlackPropotion
 
 def forImage(opt):
     print('img')
-    source, out_path, option, exclude, weightsFile, protoFile, threshold, gray_bool, back_bool, selectRect_bool, gamma_bool, b_propo_bool = opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect, opt.gamma, opt.b_propo
+    source, out_path, option, exclude, weightsFile, protoFile, threshold, gray_bool, back_bool, selectRect_bool, gamma_value, b_propo_bool = opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect, opt.gamma, opt.b_propo
     opt_dict = optionChecker(option)
 
     if exclude != -1:
@@ -61,12 +26,10 @@ def forImage(opt):
                   [12, 13], [0, 14], [0, 15], [14, 16], [15, 17]]
 
     frame = cv2.imread(source)
-    if gamma:
-        frame = gamma(frame)
+    if gamma_value > 0:
+        frame = preGamma(frame, gamma_value)
     if b_propo_bool:
-        black_proportion = findWhite(frame)
-    if(black_proportion < 30):
-        frame = equalize(frame)
+        preBlackPropotion(frame)
     if back_bool:
         frame = preBack(frame, selectRect_bool)
     if gray_bool:
