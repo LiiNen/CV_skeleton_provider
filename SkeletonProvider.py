@@ -10,6 +10,7 @@ from utils.formatter import fileformat
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    
     parser.add_argument('--source', type=str, default='example.jpeg', help='input source path. default example.jpeg')
     parser.add_argument('--output', type=str, default='output', help='output source path, until filename(format exclude). default output')
     parser.add_argument('--option', type=str, default='skl', help='draw option. contains s, k, l skeleton, keypoint, label respectively. default skl')
@@ -21,6 +22,8 @@ if __name__ == '__main__':
     parser.add_argument('--back', type=str2bool, default=False, help='preprocessing removing background img, set True')
     parser.add_argument('--selectRect', type=str2bool, default=False, help='preprocessing select Rect to masking removed background img')
     parser.add_argument('--comp', type=int, default=1, help='reducing fps only for video. fps/comp. default 1')
+    parser.add_argument('--gamma', type=str2bool, default=False, help='gamma')
+    parser.add_argument('--b_propo', type=str2bool, default=False, help='black propo')
     
     opt = parser.parse_args()
     print(opt)
