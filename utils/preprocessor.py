@@ -46,7 +46,7 @@ def findWhite(frame):
             cv2.imwrite('color.jpg', output)
             return (100*counts[index])/(h*w)
 
-def preBlackPropotion(frame):
+def preBlackProportion(frame):
     if findWhite(frame) < 30:
         image_yuv = cv2.cvtColor(frame, cv2.COLOR_RGB2YUV)  # YUV로 변경합니다.
         image_yuv[:, :, 0] = cv2.equalizeHist(image_yuv[:, :, 0])  # 히스토그램 평활화를 적용

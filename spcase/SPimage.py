@@ -8,7 +8,7 @@ from utils.formatter import optionChecker
 from utils.preprocessor import preBack
 from utils.preprocessor import preGray
 from utils.preprocessor import preGamma
-from utils.preprocessor import preBlackPropotion
+from utils.preprocessor import preBlackProportion
 
 def forImage(opt):
     print('img')
