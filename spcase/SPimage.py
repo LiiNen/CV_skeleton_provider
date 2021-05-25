@@ -6,6 +6,7 @@ import numpy as np
 
 from utils.formatter import optionChecker
 
+
 def findWhite(frame):
     lower_white = np.array([0, 0, 168])
     upper_white = np.array([172, 111, 255])
@@ -28,6 +29,7 @@ def findWhite(frame):
             cv2.imwrite('color.jpg', output)
             return (100*counts[index])/(h*w)
 
+
 def gamma(frame):
     g = float(input("감마 값 : "))
     out = frame.copy()
@@ -35,6 +37,7 @@ def gamma(frame):
     out = ((out / 255) ** (1 / g)) * 255
     out = out.astype(np.uint8)
     return out
+
 
 def equalize(frame):
     image_yuv = cv2.cvtColor(frame, cv2.COLOR_RGB2YUV)  # YUV로 변경합니다.
@@ -59,12 +62,12 @@ def forImage(opt):
                   [12, 13], [0, 14], [0, 15], [14, 16], [15, 17]]
 
     frame = cv2.imread(source)
-    if gamma:
+    if gamma_bool:
         frame = gamma(frame)
     if b_propo_bool:
         black_proportion = findWhite(frame)
-    if(black_proportion < 30):
-        frame = equalize(frame)
+        if(black_proportion < 30):
+            frame = equalize(frame)
     if back_bool:
         mask = np.zeros(frame.shape[:2], np.uint8)
         bgdModel = np.zeros((1, 65), np.float64)
@@ -73,7 +76,8 @@ def forImage(opt):
             rect = cv2.selectROI(frame)
         else:
             rect = (10, 10, frame.shape[1] - 10, frame.shape[0] - 10)
-        cv2.grabCut(frame, mask, rect, bgdModel, fgdModel, 10, cv2.GC_INIT_WITH_RECT)
+        cv2.grabCut(frame, mask, rect, bgdModel,
+                    fgdModel, 10, cv2.GC_INIT_WITH_RECT)
         mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
         frame = frame * mask2[:, :, np.newaxis]
     if gray_bool:
@@ -116,7 +120,8 @@ def forImage(opt):
         if prob > threshold:
             points.append((int(x), int(y)))
             if (opt_dict['keyp']):
-                cv2.circle(frame, points[-1], 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
+                cv2.circle(frame, points[-1], 8, (0, 255, 255),
+                           thickness=-1, lineType=cv2.FILLED)
             if (opt_dict['label']):
                 cv2.putText(frame, "{}".format(i), points[-1], cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2,
                             lineType=cv2.LINE_AA)
