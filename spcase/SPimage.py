@@ -26,6 +26,7 @@ def forImage(opt):
                   [12, 13], [0, 14], [0, 15], [14, 16], [15, 17]]
 
     frame = cv2.imread(source)
+    
     if gamma_value > 0:
         frame = preGamma(frame, gamma_value)
     if b_propo_bool:
@@ -67,7 +68,8 @@ def forImage(opt):
         if prob > threshold:
             points.append((int(x), int(y)))
             if (opt_dict['keyp']):
-                cv2.circle(frame, points[-1], 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
+                cv2.circle(frame, points[-1], 8, (0, 255, 255),
+                           thickness=-1, lineType=cv2.FILLED)
             if (opt_dict['label']):
                 cv2.putText(frame, "{}".format(i), points[-1], cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2,
                             lineType=cv2.LINE_AA)
