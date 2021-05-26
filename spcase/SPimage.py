@@ -1,17 +1,25 @@
 import argparse
 import cv2
+import imutils
 import time
 import numpy as np
 import sys,os
 
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+# sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from utils.formatter import optionChecker
-from connect_location import detect
+# from connect_location import detect
+from utils.formatter import optionChecker
+from utils.preprocessor import preBack
+from utils.preprocessor import preGray
+from utils.preprocessor import preGamma
+from utils.preprocessor import preBlackProportion
 
 def forImage(opt):
     print('img')
-    source, out_path, option, exclude, weightsFile, protoFile, threshold, gray_bool, back_bool, selectRect_bool, auto_location = opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect, opt.autolocation
+    source, out_path, option, exclude, weightsFile, protoFile, threshold = opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres
+    gray_bool, back_bool, selectRect_bool, auto_bool, gamma_value, b_propo_bool = opt.gray, opt.back, opt.selectRect, opt.auto_lcation, opt.gamma, opt.b_propo
+    
     opt_dict = optionChecker(option)
 
     if exclude != -1:
@@ -25,27 +33,19 @@ def forImage(opt):
                   [12, 13], [0, 14], [0, 15], [14, 16], [15, 17]]
 
     frame = cv2.imread(source)
+    
+    if gamma_value > 0:
+        frame = preGamma(frame, gamma_value)
+    if b_propo_bool:
+        preBlackPropotion(frame)
     if back_bool:
-        mask = np.zeros(frame.shape[:2], np.uint8)
-        bgdModel = np.zeros((1, 65), np.float64)
-        fgdModel = np.zeros((1, 65), np.float64)
-        if selectRect_bool:
-            rect = cv2.selectROI(frame)
-        elif auto_location:
-            temp = detect(1,frame)
-            rect = (int(temp[0]),int(temp[1]),int(temp[2])-10,int(temp[3]-10))
-        else:
-            rect = (10, 10, frame.shape[1] - 10, frame.shape[0] - 10)
-        cv2.grabCut(frame, mask, rect, bgdModel, fgdModel, 10, cv2.GC_INIT_WITH_RECT)
-        mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
-        frame = frame * mask2[:, :, np.newaxis]
+#         auto location rect add
+#           if auto_bool:
+#           temp = detect(1,frame)
+#           rect = (int(temp[0]),int(temp[1]),int(temp[2])-10,int(temp[3]-10))
+        frame = preBack(frame, selectRect_bool)
     if gray_bool:
-        frame = cv2.imread(source, cv2.IMREAD_UNCHANGED)
-        bgr = frame[:, :, :3]
-        gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
-        bgr = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
-        # alpha = rgb2gray(frame)  # Channel 3
-        frame = np.dstack([bgr])  # Add the alpha channel
+        frame = preGray(frame, source)
 
     frameWidth = frame.shape[1]
     frameHeight = frame.shape[0]
@@ -60,7 +60,6 @@ def forImage(opt):
                                     (0, 0, 0), swapRB=False, crop=False)
 
     net.setInput(inpBlob)
-
     output = net.forward()
     print("time taken : {:.3f}".format(time.time() - t))
 
@@ -80,7 +79,8 @@ def forImage(opt):
         if prob > threshold:
             points.append((int(x), int(y)))
             if (opt_dict['keyp']):
-                cv2.circle(frame, points[-1], 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
+                cv2.circle(frame, points[-1], 8, (0, 255, 255),
+                           thickness=-1, lineType=cv2.FILLED)
             if (opt_dict['label']):
                 cv2.putText(frame, "{}".format(i), points[-1], cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2,
                             lineType=cv2.LINE_AA)
