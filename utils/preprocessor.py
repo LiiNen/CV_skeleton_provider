@@ -1,18 +1,22 @@
 import cv2
 import numpy as np
 
-def preBack(frame, selectRect_bool):
+def preBack(frame, selectRect_bool, preBack_rect):
     mask = np.zeros(frame.shape[:2], np.uint8)
     bgdModel = np.zeros((1, 65), np.float64)
     fgdModel = np.zeros((1, 65), np.float64)
     if selectRect_bool:
-        rect = cv2.selectROI(frame)
+        if preBack_rect == (0, 0, 0, 0):
+            rect = cv2.selectROI(frame)
+            preBack_rect = rect
+        else:
+            rect = preBack_rect
     else:
         rect = (10, 10, frame.shape[1] - 10, frame.shape[0] - 10)
     cv2.grabCut(frame, mask, rect, bgdModel, fgdModel, 10, cv2.GC_INIT_WITH_RECT)
     mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
     frame = frame * mask2[:, :, np.newaxis]
-    return frame
+    return frame, rect
 
 def preGray(frame, source):
     frame = cv2.imread(source, cv2.IMREAD_UNCHANGED)

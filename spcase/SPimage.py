@@ -17,8 +17,8 @@ from utils.preprocessor import preBlackProportion
 
 def forImage(opt):
     print('img')
-    source, out_path, option, exclude, weightsFile, protoFile, threshold = opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres
-    gray_bool, back_bool, selectRect_bool, auto_bool, gamma_value, b_propo_bool = opt.gray, opt.back, opt.selectRect, opt.auto_lcation, opt.gamma, opt.b_propo
+    source, out_path, option, exclude, weightsFile, protoFile, threshold, gray_bool, back_bool, selectRect_bool, auto_bool, gamma_value, b_propo_bool = \
+      opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect, opt.autolocation, opt.gamma, opt.b_propo
     
     opt_dict = optionChecker(option)
 
@@ -33,16 +33,19 @@ def forImage(opt):
                   [12, 13], [0, 14], [0, 15], [14, 16], [15, 17]]
 
     frame = cv2.imread(source)
+    originFrame = frame.copy()
     
     if gamma_value > 0:
         frame = preGamma(frame, gamma_value)
     if b_propo_bool:
         preBlackPropotion(frame)
     if back_bool:
-#         auto location rect add
-#           if auto_bool:
-#           temp = detect(1,frame)
-#           rect = (int(temp[0]),int(temp[1]),int(temp[2])-10,int(temp[3]-10))
+        rect_init = (0, 0, 0, 0)
+        if auto_bool:
+          #temp = detect(1, frame)
+          #temp_rect = (int(temp[0]), int(temp[1]), int(temp[2])-10, int(temp[3]-10))
+          #frame, unused_rect = preBack(frame, selectRect_bool, temp_rect)
+          print('imported none')
         frame = preBack(frame, selectRect_bool)
     if gray_bool:
         frame = preGray(frame, source)
@@ -79,10 +82,10 @@ def forImage(opt):
         if prob > threshold:
             points.append((int(x), int(y)))
             if (opt_dict['keyp']):
-                cv2.circle(frame, points[-1], 8, (0, 255, 255),
+                cv2.circle(originFrame, points[-1], 8, (0, 255, 255),
                            thickness=-1, lineType=cv2.FILLED)
             if (opt_dict['label']):
-                cv2.putText(frame, "{}".format(i), points[-1], cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2,
+                cv2.putText(originFrame, "{}".format(i), points[-1], cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2,
                             lineType=cv2.LINE_AA)
         else:
             points.append(None)
@@ -94,10 +97,11 @@ def forImage(opt):
             partB = pair[1]
 
             if points[partA] and points[partB]:
-                cv2.line(frame, points[partA], points[partB], (0, 255, 255), 2)
+                cv2.line(originFrame, points[partA], points[partB], (0, 255, 255), 2)
 
     cv2.imshow('output', frame)
-    cv2.imwrite(out_path + '.jpg', frame)
+    cv2.imshow('output_origin', originFrame)
+    cv2.imwrite(out_path + '.jpg', originFrame)
 
     print("Total time taken : {:.3f}".format(time.time() - t))
 
