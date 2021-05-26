@@ -34,7 +34,7 @@ def forImage(opt):
     if b_propo_bool:
         preBlackPropotion(frame)
     if back_bool:
-        frame = preBack(frame, selectRect_bool)
+        frame, unused_rect = preBack(frame, selectRect_bool, (0, 0, 0, 0))
     if gray_bool:
         frame = preGray(frame, source)
 

@@ -43,6 +43,8 @@ def forVideo(opt):
     inWidth = 368
     inHeight = 368
     t = time.time()
+    if back_bool:
+        preBack_rect = (0, 0, 0, 0)
     while(frameLeft):
         originFrame = frame.copy()
         if gamma_value > 0:
@@ -50,7 +52,7 @@ def forVideo(opt):
         if b_propo_bool:
             preBlackPropotion(frame)
         if back_bool:
-            frame = preBack(frame, selectRect_bool)
+            frame, preBack_rect = preBack(frame, selectRect_bool, preBack_rect)
         if gray_bool:
             frame = preGray(frame, source)
 
