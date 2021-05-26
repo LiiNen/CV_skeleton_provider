@@ -3,7 +3,12 @@ import cv2
 import imutils
 import time
 import numpy as np
+import sys,os
 
+# sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
+from utils.formatter import optionChecker
+# from connect_location import detect
 from utils.formatter import optionChecker
 from utils.preprocessor import preBack
 from utils.preprocessor import preGray
@@ -12,7 +17,9 @@ from utils.preprocessor import preBlackProportion
 
 def forImage(opt):
     print('img')
-    source, out_path, option, exclude, weightsFile, protoFile, threshold, gray_bool, back_bool, selectRect_bool, gamma_value, b_propo_bool = opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect, opt.gamma, opt.b_propo
+    source, out_path, option, exclude, weightsFile, protoFile, threshold = opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres
+    gray_bool, back_bool, selectRect_bool, auto_bool, gamma_value, b_propo_bool = opt.gray, opt.back, opt.selectRect, opt.auto_lcation, opt.gamma, opt.b_propo
+    
     opt_dict = optionChecker(option)
 
     if exclude != -1:
@@ -32,6 +39,10 @@ def forImage(opt):
     if b_propo_bool:
         preBlackPropotion(frame)
     if back_bool:
+#         auto location rect add
+#           if auto_bool:
+#           temp = detect(1,frame)
+#           rect = (int(temp[0]),int(temp[1]),int(temp[2])-10,int(temp[3]-10))
         frame = preBack(frame, selectRect_bool)
     if gray_bool:
         frame = preGray(frame, source)

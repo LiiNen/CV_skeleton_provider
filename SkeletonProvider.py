@@ -21,6 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('--gray', type=str2bool, default=False, help='preprocessing using gray img, set True')
     parser.add_argument('--back', type=str2bool, default=False, help='preprocessing removing background img, set True')
     parser.add_argument('--selectRect', type=str2bool, default=False, help='preprocessing select Rect to masking removed background img')
+    parser.add_argument('--autolocation', type=str2bool, default=False, help='preprocessing using auto location to check boundary, set True')
     parser.add_argument('--comp', type=int, default=1, help='reducing fps only for video. fps/comp. default 1')
     parser.add_argument('--gamma', type=float, default=-1, help='gamma over 0. default -1(none)')
     parser.add_argument('--b_propo', type=str2bool, default=False, help='black proportion')
