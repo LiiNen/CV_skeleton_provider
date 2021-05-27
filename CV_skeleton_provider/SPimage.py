@@ -1,19 +1,19 @@
-# import argparse
-# import cv2
-# import imutils
-# import time
-# import numpy as np
-# import sys,os
+import argparse
+import cv2
+import imutils
+import time
+import numpy as np
+import sys,os
 
-# # sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+# sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-# from utils.formatter import optionChecker
-# # from connect_location import detect
-# from utils.formatter import optionChecker
-# from utils.preprocessor import preBack
-# from utils.preprocessor import preGray
-# from utils.preprocessor import preGamma
-# from utils.preprocessor import preBlackProportion
+from utils_formatter import optionChecker
+# from connect_location import detect
+from utils_formatter import optionChecker
+from utils_preprocessor import preBack
+from utils_preprocessor import preGray
+from utils_preprocessor import preGamma
+from utils_preprocessor import preBlackProportion
 
 def forImage(opt):
     print('img')

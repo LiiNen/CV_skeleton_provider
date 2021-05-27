@@ -1,12 +1,12 @@
-# import argparse
-# import cv2
-# import time
-# import numpy as np
+import argparse
+import cv2
+import time
+import numpy as np
 
-# from spcase.SPimage import forImage
-# from spcase.SPvideo import forVideo
-# from utils.formatter import str2bool
-# from utils.formatter import fileformat
+from SPimage import forImage
+from SPvideo import forVideo
+from utils_formatter import str2bool
+from utils_formatter import fileformat
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -67,7 +67,6 @@ def skprovider(dict_object):
         else:
             arg_list.append(key)
             arg_list.append(str(dict_object[key]))
-        print(arg_list)
 
     parser = argparse.ArgumentParser()
 

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
  
 setup(
     name                = 'CV_skeleton_provider',
-    version             = '0.1.3',
+    version             = '0.1.11',
     description         = 'provide skeleton of a person',
     author              = 'LiiNen',
     author_email        = 'kjeonghoon065@gmail.com',
@@ -10,6 +10,7 @@ setup(
     install_requires    =  ['numpy', 'opencv-python'],
     keywords            = ['Skeleton Provider'],
     python_requires     = '>=3',
+    packages            = find_packages(),
     package_data        = {},
     zip_safe            = False,
     classifiers         = [
@@ -20,5 +21,6 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
 )
