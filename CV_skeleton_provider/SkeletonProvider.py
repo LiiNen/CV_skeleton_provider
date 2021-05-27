@@ -3,10 +3,10 @@ import cv2
 import time
 import numpy as np
 
-from SPimage import forImage
-from SPvideo import forVideo
-from utils_formatter import str2bool
-from utils_formatter import fileformat
+from CV_skeleton_provider.SPimage import forImage
+from CV_skeleton_provider.SPvideo import forVideo
+from CV_skeleton_provider.utils_formatter import str2bool
+from CV_skeleton_provider.utils_formatter import fileformat
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -38,34 +38,34 @@ if __name__ == '__main__':
 
 def defaultDict():
     default_dict = {}
-    default_dict['--source'] = './example.jpeg'
-    default_dict['--output'] = './output'
-    default_dict['--option'] = 'skl'
-    default_dict['--exclude'] = []
-    default_dict['--proto'] = './pose/coco/pose_deploy_linevec.prototxt'
-    default_dict['--weight'] = './pose/coco/pose_iter_440000.caffemodel'
-    default_dict['--thres'] = 0.1
-    default_dict['--gray'] = False
-    default_dict['--back'] = False
-    default_dict['--selectRect'] = False
-    default_dict['--autolocation'] = False
-    default_dict['--comp'] = 1
-    default_dict['--gamma'] = -1
-    default_dict['--b_propo'] = False
+    default_dict['source'] = './example.jpeg'
+    default_dict['output'] = './output'
+    default_dict['option'] = 'skl'
+    default_dict['exclude'] = []
+    default_dict['proto'] = './pose/coco/pose_deploy_linevec.prototxt'
+    default_dict['weight'] = './pose/coco/pose_iter_440000.caffemodel'
+    default_dict['thres'] = 0.1
+    default_dict['gray'] = False
+    default_dict['back'] = False
+    default_dict['selectRect'] = False
+    default_dict['autolocation'] = False
+    default_dict['comp'] = 1
+    default_dict['gamma'] = -1
+    default_dict['b_propo'] = False
     return default_dict
 
 def skprovider(dict_object):
     arg_list = []
     keys = dict_object.keys()
     for key in keys:
-        if key == '--exclude':
+        if key == 'exclude':
             if len(dict_object[key]) == 0:
                 continue
             for item in dict_object[key]:
-                arg_list.append(key)
+                arg_list.append('--' + key)
                 arg_list.append(str(item))
         else:
-            arg_list.append(key)
+            arg_list.append('--' + key)
             arg_list.append(str(dict_object[key]))
 
     parser = argparse.ArgumentParser()

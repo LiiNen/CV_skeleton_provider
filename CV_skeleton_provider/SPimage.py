@@ -7,13 +7,13 @@ import sys,os
 
 # sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from utils_formatter import optionChecker
+from CV_skeleton_provider.utils_formatter import optionChecker
 # from connect_location import detect
-from utils_formatter import optionChecker
-from utils_preprocessor import preBack
-from utils_preprocessor import preGray
-from utils_preprocessor import preGamma
-from utils_preprocessor import preBlackProportion
+from CV_skeleton_provider.utils_formatter import optionChecker
+from CV_skeleton_provider.utils_preprocessor import preBack
+from CV_skeleton_provider.utils_preprocessor import preGray
+from CV_skeleton_provider.utils_preprocessor import preGamma
+from CV_skeleton_provider.utils_preprocessor import preBlackProportion
 
 def forImage(opt):
     print('img')

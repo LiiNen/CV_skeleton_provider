@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
  
 setup(
     name                = 'CV_skeleton_provider',
-    version             = '0.1.11',
+    version             = '0.1.15',
     description         = 'provide skeleton of a person',
     author              = 'LiiNen',
     author_email        = 'kjeonghoon065@gmail.com',
