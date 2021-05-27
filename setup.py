@@ -2,13 +2,12 @@ from setuptools import setup, find_packages
  
 setup(
     name                = 'CV_skeleton_provider',
-    version             = '0.1.1',
+    version             = '0.1.3',
     description         = 'provide skeleton of a person',
     author              = 'LiiNen',
     author_email        = 'kjeonghoon065@gmail.com',
     url                 = 'https://github.com/LiiNen/CV_skeleton_provider',
     install_requires    =  ['numpy', 'opencv-python'],
-    packages            = find_packages(exclude = []),
     keywords            = ['Skeleton Provider'],
     python_requires     = '>=3',
     package_data        = {},
