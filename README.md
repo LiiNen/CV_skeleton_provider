@@ -6,6 +6,8 @@ For solving some discomports, we make it from the beginning and providing argpar
 Also providing img preprocessing methods, you can use it with simple options when you use specific imgs <br>
 
 ## How to use
+! prototxt file & caffemodel file are not included in both pypi package & project <br>
+! you should download these pre-trained models in website, and you can easily find it <br>
 ### using pip package (recommended)
 1. install pypi package
 ```bash
@@ -16,7 +18,7 @@ $ pip install CV_skeleton_provider
 from CV_skeleton_provider.SkeletonProvider import defaultDict, skprovider
 skprovider(defaultDict()) # show skeleton image over default img
 ```
-3. custom parameter
+3. custom parameter (when customizing)
 ```python
 input_dict = defaultDict()
 input_dict['source']       =  './example.jpeg'   # input filepath. img(jpg, jpeg, png) or video(mp4, avi, mkv) supported
@@ -33,6 +35,7 @@ input_dict['gamma']        =  -1                 # img preprocessing gamma value
 input_dict['b_propo']      =  False              # check black proportion and preprocessing reducing black part (bool)
 input_dict['proto']        =  './pose/coco/pose_deploy_linevec.prototxt'    # prototxt filepath
 input_dict['weight']       =  './pose/coco/pose_iter_440000.caffemodel'     # caffemodel filepath
+skprovider(input_dict)
 ```
 
 ### using clone project
