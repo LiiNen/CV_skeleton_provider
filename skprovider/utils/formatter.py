@@ -11,9 +11,9 @@ def str2bool(v):
 
 # file format(img, video) checker
 def fileformat(path):
-    if path.split('.')[1] in ['jpg', 'jpeg', 'png']:
+    if path.split('.')[-1] in ['jpg', 'jpeg', 'png']:
         return 0
-    elif path.split('.')[1] in ['mp4', 'avi', 'mkv']:
+    elif path.split('.')[-1] in ['mp4', 'avi', 'mkv']:
         return 1
     else:
         return -1
