@@ -11,8 +11,8 @@ from utils.formatter import fileformat
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('--source', type=str, default='./example.jpeg', help='input source path. default example.jpeg')
-    parser.add_argument('--output', type=str, default='./output', help='output source path, until filename(format exclude). default output')
+    parser.add_argument('--source', type=str, default='../example.jpeg', help='input source path. default example.jpeg')
+    parser.add_argument('--output', type=str, default='../output', help='output source path, until filename(format exclude). default output')
     parser.add_argument('--option', type=str, default='skl', help='draw option. contains s, k, l skeleton, keypoint, label respectively. default skl')
     parser.add_argument('--exclude', nargs='+', type=int, default=-1, help='points to exclude. args for spacing. -1 for none(default), 0~17 to exclude. else error')
     parser.add_argument('--proto', type=str, default='./pose/coco/pose_deploy_linevec.prototxt', help='for model. default pose/coco/pose_deploy_linevec.prototxt')
