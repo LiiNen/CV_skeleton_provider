@@ -45,8 +45,13 @@ $ pip install -r ./CV_skeleton_provider/requirements.txt
 $ cd ./CV_skeleton_provider/CV_skeleton_provider
 $ python ./SkeletonProvider.py # show skeleton image over default img
 ```
-you can use argparse parameter with SkeletonProvider.py <br>
+you can use argparse with SkeletonProvider.py to change parameter <br>
 check it with following command in CLI
 ```bash
 $ python SkeletonProvider.py --help
+```
+! as mentioned, prototxt & caffemodel must be existed. followings are default path <br>
+```
+./CV_skeleton_provider/CV_skeleton_provider/pose/coco/pose_deploy_linevec.prototxt
+./CV_skeleton_provider/CV_skeleton_provider/pose/coco/pose_iter_440000.caffemodel
 ```
