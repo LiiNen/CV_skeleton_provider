@@ -48,7 +48,7 @@ def forImage(opt):
           #temp_rect = (int(temp[0]), int(temp[1]), int(temp[2])-10, int(temp[3]-10))
           #frame, unused_rect = preBack(frame, selectRect_bool, temp_rect)
           print('imported none')
-        frame = preBack(frame, selectRect_bool, rect_init)
+        frame, preBack_rect = preBack(frame, selectRect_bool, rect_init)
     if gray_bool:
         frame = preGray(frame, source)
     if(draw_on == 'transform'):

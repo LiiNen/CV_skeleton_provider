@@ -47,7 +47,6 @@ def findWhite(frame):
 
     for index, colour in enumerate(colours):
         if(colour[0] == 0 & colour[1] == 0 & colour[2] == 0):
-            cv2.imwrite('color.jpg', output)
             return (100*counts[index])/(h*w)
 
 def preBlackProportion(frame):

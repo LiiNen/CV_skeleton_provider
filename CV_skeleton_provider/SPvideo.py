@@ -9,7 +9,7 @@ from CV_skeleton_provider.utils_formatter import optionChecker
 from CV_skeleton_provider.utils_preprocessor import preBack
 from CV_skeleton_provider.utils_preprocessor import preGray
 from CV_skeleton_provider.utils_preprocessor import preGamma
-from utils_preprocessor import preBlackProportion
+from CV_skeleton_provider.utils_preprocessor import preBlackProportion
 
 def forVideo(opt):
     print('video')
