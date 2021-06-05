@@ -72,6 +72,50 @@ $ python SkeletonProvider.py --help
 ```
 <br>
 
+## Processing Examples (improve detecting accuracy)
+### using black proportion
+<table>
+  <tr>
+    <td align='center' width='33%'>origin input</td>
+    <td align='center' width='33%'>origin output</td>
+    <td align='center' width='33%'>black proportion output</td>
+  </tr>
+  <tr>
+    <td align='center'><img src="/readme_img/prop_origin.jpg"/></td>
+    <td align='center'><img src="/readme_img/prop_output.jpg"/></td>
+    <td align='center'><img src="/readme_img/prop_process.png"/></td>
+  </tr>
+</table>
+
+### using background removing
+<table>
+  <tr>
+    <td align='center' width='33%'>origin input</td>
+    <td align='center' width='33%'>origin output</td>
+    <td align='center' width='33%'>background removed</td>
+  </tr>
+  <tr>
+    <td align='center'><img src="/readme_img/back_origin.jpg"/></td>
+    <td align='center'><img src="/readme_img/back_output.jpg"/></td>
+    <td align='center'><img src="/readme_img/back_process.jpg"/></td>
+  </tr>
+</table>
+
+### setting gamma value
+<table>
+  <tr>
+    <td align='center' width='33%'>origin input</td>
+    <td align='center' width='33%'>origin output</td>
+    <td align='center' width='33%'>gamma 0.8 output</td>
+  </tr>
+  <tr>
+    <td align='center'><img src="/readme_img/gamma_origin.jpg"/></td>
+    <td align='center'><img src="/readme_img/gamma_output.jpg"/></td>
+    <td align='center'><img src="/readme_img/gamma_process.jpg"/></td>
+  </tr>
+</table>
+<br>
+
 ## Main contributors
 <table>
   <tr><td align='center'>Github</td><td align='center'>Contact</td></tr>
