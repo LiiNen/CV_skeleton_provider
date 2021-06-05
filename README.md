@@ -33,6 +33,8 @@ input_dict['autolocation'] =  False              # when removing background, cod
 input_dict['comp']         =  1                  # for only video. video frame will be reduced to 1/comp (int)
 input_dict['gamma']        =  -1                 # img preprocessing gamma value. under 0 means not processing gamma (float)
 input_dict['b_propo']      =  False              # check black proportion and preprocessing reducing black part (bool)
+input_dict['show']         =  False              # (only for img) if you want to show img with cv2.imshow, set to True (bool)
+input_dict['save']         =  True               # (only for img) if you want not to save file in local, set to False (bool)
 input_dict['proto']        =  './pose/coco/pose_deploy_linevec.prototxt'    # prototxt filepath
 input_dict['weight']       =  './pose/coco/pose_iter_440000.caffemodel'     # caffemodel filepath
 skprovider(input_dict)
