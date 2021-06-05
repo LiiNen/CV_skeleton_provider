@@ -25,6 +25,8 @@ if __name__ == '__main__':
     parser.add_argument('--comp', type=int, default=1, help='reducing fps only for video. fps/comp. default 1')
     parser.add_argument('--gamma', type=float, default=-1, help='gamma over 0. default -1(none)')
     parser.add_argument('--b_propo', type=str2bool, default=False, help='black proportion')
+    parser.add_argument('--show', type=str2bool, default=False, help='show images with python imshow')
+    parser.add_argument('--save', type=str2bool, default=True, help='not to save output')
     
     opt = parser.parse_args()
     print(opt)
@@ -52,6 +54,8 @@ def defaultDict():
     default_dict['comp'] = 1
     default_dict['gamma'] = -1
     default_dict['b_propo'] = False
+    default_dict['show'] = False
+    default_dict['save'] = True
     return default_dict
 
 def skprovider(dict_object):
@@ -84,6 +88,8 @@ def skprovider(dict_object):
     parser.add_argument('--comp', type=int, default=1, help='reducing fps only for video. fps/comp. default 1')
     parser.add_argument('--gamma', type=float, default=-1, help='gamma over 0. default -1(none)')
     parser.add_argument('--b_propo', type=str2bool, default=False, help='black proportion')
+    parser.add_argument('--show', type=str2bool, default=False, help='show images with python imshow. only for img')
+    parser.add_argument('--save', type=str2bool, default=True, help='not to save output. only for img')
 
     opt = parser.parse_args(arg_list)
     print(opt)

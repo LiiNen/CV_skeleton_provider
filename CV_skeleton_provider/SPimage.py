@@ -17,8 +17,8 @@ from CV_skeleton_provider.utils_preprocessor import preBlackProportion
 
 def forImage(opt):
     print('img')
-    source, out_path, option, exclude, weightsFile, protoFile, threshold, gray_bool, back_bool, selectRect_bool, auto_bool, gamma_value, b_propo_bool = \
-      opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect, opt.autolocation, opt.gamma, opt.b_propo
+    source, out_path, option, exclude, weightsFile, protoFile, threshold, gray_bool, back_bool, selectRect_bool, auto_bool, gamma_value, b_propo_bool, show_bool, save_bool = \
+      opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect, opt.autolocation, opt.gamma, opt.b_propo, opt.show, opt.save
     
     opt_dict = optionChecker(option)
 
@@ -98,10 +98,11 @@ def forImage(opt):
 
             if points[partA] and points[partB]:
                 cv2.line(originFrame, points[partA], points[partB], (0, 255, 255), 2)
-
-    cv2.imshow('output', frame)
-    cv2.imshow('output_origin', originFrame)
-    cv2.imwrite(out_path + '.jpg', originFrame)
+    if show_bool:
+        cv2.imshow('output', frame)
+        cv2.imshow('output_origin', originFrame)
+    if save_bool:
+        cv2.imwrite(out_path + '.jpg', originFrame)
 
     print("Total time taken : {:.3f}".format(time.time() - t))
 
