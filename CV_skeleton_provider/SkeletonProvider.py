@@ -27,6 +27,7 @@ if __name__ == '__main__':
     parser.add_argument('--b_propo', type=str2bool, default=False, help='black proportion')
     parser.add_argument('--show', type=str2bool, default=False, help='show images with python imshow')
     parser.add_argument('--save', type=str2bool, default=True, help='not to save output')
+    parser.add_argument('--draw_on', type=str, default='origin', help='target img to save or draw points. \'origin\' or \'transform\' only')
     
     opt = parser.parse_args()
     print(opt)
@@ -56,6 +57,7 @@ def defaultDict():
     default_dict['b_propo'] = False
     default_dict['show'] = False
     default_dict['save'] = True
+    default_dict['draw_on'] = 'origin'
     return default_dict
 
 def skprovider(dict_object):
@@ -90,10 +92,13 @@ def skprovider(dict_object):
     parser.add_argument('--b_propo', type=str2bool, default=False, help='black proportion')
     parser.add_argument('--show', type=str2bool, default=False, help='show images with python imshow. only for img')
     parser.add_argument('--save', type=str2bool, default=True, help='not to save output. only for img')
+    parser.add_argument('--draw_on', type=str, default='origin', help='target img to save or draw points. \'origin\' or \'transform\' only')
 
     opt = parser.parse_args(arg_list)
     print(opt)
-
+    if opt.draw_on != 'origin' and opt.draw_on != 'transform':
+        print('error on arg \'draw_on\'')
+        return
     if fileformat(opt.source) == 0:
         forImage(opt)
     elif fileformat(opt.source) == 1:

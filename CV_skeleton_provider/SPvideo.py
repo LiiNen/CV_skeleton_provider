@@ -9,14 +9,14 @@ from CV_skeleton_provider.utils_formatter import optionChecker
 from CV_skeleton_provider.utils_preprocessor import preBack
 from CV_skeleton_provider.utils_preprocessor import preGray
 from CV_skeleton_provider.utils_preprocessor import preGamma
-from CV_skeleton_provider.utils_preprocessor import preBlackProportion
+from utils_preprocessor import preBlackProportion
 
 def forVideo(opt):
     print('video')
     source, out_path, option, exclude, weightsFile, protoFile, threshold, comp = \
       opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.comp
-    gray_bool, back_bool, selectRect_bool, gamma_value, b_propo_bool = \
-      opt.gray, opt.back, opt.selectRect, opt.gamma, opt.b_propo
+    gray_bool, back_bool, selectRect_bool, gamma_value, b_propo_bool, draw_on = \
+      opt.gray, opt.back, opt.selectRect, opt.gamma, opt.b_propo, opt.draw_on
 
     opt_dict = optionChecker(option)
     if exclude != -1:
@@ -50,11 +50,14 @@ def forVideo(opt):
         if gamma_value > 0:
             frame = preGamma(frame, gamma_value)
         if b_propo_bool:
-            preBlackPropotion(frame)
+            preBlackProportion(frame)
         if back_bool:
             frame, preBack_rect = preBack(frame, selectRect_bool, preBack_rect)
         if gray_bool:
             frame = preGray(frame, source)
+        
+        if(draw_on == 'transform'):
+            originFrame = frame.copy()
 
         inpBlob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (inWidth, inHeight),
                             (0, 0, 0), swapRB=False, crop=False)

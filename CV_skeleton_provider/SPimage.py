@@ -17,8 +17,10 @@ from CV_skeleton_provider.utils_preprocessor import preBlackProportion
 
 def forImage(opt):
     print('img')
-    source, out_path, option, exclude, weightsFile, protoFile, threshold, gray_bool, back_bool, selectRect_bool, auto_bool, gamma_value, b_propo_bool, show_bool, save_bool = \
-      opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres, opt.gray, opt.back, opt.selectRect, opt.autolocation, opt.gamma, opt.b_propo, opt.show, opt.save
+    source, out_path, option, exclude, weightsFile, protoFile, threshold = \
+        opt.source, opt.output, opt.option, opt.exclude, opt.weight, opt.proto, opt.thres
+    gray_bool, back_bool, selectRect_bool, auto_bool, gamma_value, b_propo_bool, show_bool, save_bool, draw_on = \
+        opt.gray, opt.back, opt.selectRect, opt.autolocation, opt.gamma, opt.b_propo, opt.show, opt.save, opt.draw_on
     
     opt_dict = optionChecker(option)
 
@@ -38,7 +40,7 @@ def forImage(opt):
     if gamma_value > 0:
         frame = preGamma(frame, gamma_value)
     if b_propo_bool:
-        preBlackPropotion(frame)
+        preBlackProportion(frame)
     if back_bool:
         rect_init = (0, 0, 0, 0)
         if auto_bool:
@@ -49,6 +51,8 @@ def forImage(opt):
         frame = preBack(frame, selectRect_bool, rect_init)
     if gray_bool:
         frame = preGray(frame, source)
+    if(draw_on == 'transform'):
+        originFrame = frame.copy()
 
     frameWidth = frame.shape[1]
     frameHeight = frame.shape[0]
