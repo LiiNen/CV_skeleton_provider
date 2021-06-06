@@ -116,6 +116,14 @@ $ python SkeletonProvider.py --help
 </table>
 <br>
 
+### movie test (device iPhone SE2, 30fps)
+<table>
+  <tr>
+    <td align='center' width="50%"><img src="/readme_img/sg1_output.gif"/></td>
+    <td align='center' width="50%"><img src="/readme_img/sg2_output.gif"/></td>
+  </tr>
+</table>
+
 ## Main contributors
 <table>
   <tr><td align='center'>Github</td><td align='center'>Contact</td></tr>
